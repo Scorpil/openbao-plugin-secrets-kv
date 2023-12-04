@@ -1,40 +1,35 @@
-# Vault Plugin: Key-Value Secrets Backend [![Build Status](https://travis-ci.org/hashicorp/vault-plugin-secrets-kv.svg?branch=master)](https://travis-ci.org/hashicorp/vault-plugin-secrets-kv)
+# OpenBao Plugin: Key-Value Secrets Backend [![Build Status](https://travis-ci.org/openbao/openbao-plugin-secrets-kv.svg?branch=master)](https://travis-ci.org/openbao/openbao-plugin-secrets-kv)
 
-This is a standalone backend plugin for use with [Hashicorp Vault](https://www.github.com/hashicorp/vault).
-This plugin provides Key-Value functionality to Vault.
+This is a standalone backend plugin for use with [OpenBao](https://www.github.com/openbao/openbao).
+This plugin provides Key-Value functionality to OpenBao.
 
-**Please note**: We take Vault's security and our users' trust very seriously. If you believe you have found a security issue in Vault, _please responsibly disclose_ by contacting us at [security@hashicorp.com](mailto:security@hashicorp.com).
+**Please note**: We take OpenBao's security and our users' trust very seriously. If you believe you have found a security issue in OpenBao, _please responsibly disclose_ by contacting us at [openbao-security@lists.lfedge.org](mailto:openbao-security@lists.lfedge.org).
+
 
 ## Quick Links
-    - Vault Website: https://www.vaultproject.io
-    - KV Docs: https://www.vaultproject.io/docs/secrets/kv/index.html
-    - Main Project Github: https://www.github.com/hashicorp/vault
+    - Main Project Github: https://www.github.com/openbao/openbao
+<!-- 
+    Work in progress:
+    - OpenBao Website: https://www.openbao.org
+    - KV Docs: https://www.openbao.org/docs/secrets/kv/index.html 
+-->
 
 ## Getting Started
 
-This is a [Vault plugin](https://www.vaultproject.io/docs/internals/plugins.html)
-and is meant to work with Vault. This guide assumes you have already installed Vault
-and have a basic understanding of how Vault works.
-
-Otherwise, first read this guide on how to [get started with Vault](https://www.vaultproject.io/intro/getting-started/install.html).
-
-To learn specifically about how plugins work, see documentation on [Vault plugins](https://www.vaultproject.io/docs/internals/plugins.html).
+This is a OpenBao plugin and is meant to work with OpenBao. This guide assumes you have already installed OpenBao
+and have a basic understanding of how OpenBao works.
 
 ## Usage
 
-Please see [documentation for the plugin](https://www.vaultproject.io/docs/secrets/kv/index.html)
-on the Vault website.
-
-This plugin is currently built into Vault and by default is accessed
-at `kv`. To enable this in a running Vault server:
+This plugin is currently built into OpenBao and by default is accessed
+at `kv`. To enable this in a running OpenBao server:
 
 ```sh
-$ vault secrets enable kv
+$ bao secrets enable kv
 Success! Enabled the kv secrets engine at: kv/
 ```
 
-Additionally starting with Vault 0.10 this backend is by default mounted
-at `secret/`.
+Additionally this backend is by default mounted at `secret/`.
 
 ## Developing
 
@@ -45,7 +40,7 @@ If you wish to work on this plugin, you'll first need
 For local dev first make sure Go is properly installed, including
 setting up a [GOPATH](https://golang.org/doc/code.html#GOPATH).
 Next, clone this repository into
-`$GOPATH/src/github.com/hashicorp/vault-plugin-secrets-kv`.
+`$GOPATH/src/github.com/openbao/openbao-plugin-secrets-kv`.
 You can then download any required build tools by bootstrapping your
 environment:
 
@@ -63,17 +58,16 @@ $ make dev
 ```
 
 Once you've done that, there are two approaches to testing your new plugin version
-in Vault. You can add a temporary `replace` declaration in your local Vault checkout's
+in OpenBao. You can add a temporary `replace` declaration in your local OpenBao checkout's
 go.mod (above the `require` declarations), such as:
 
 ```
-replace github.com/hashicorp/vault-plugin-secrets-kv => /path/to/your/project/vault-plugin-secrets-kv
+replace github.com/openbao/openbao-plugin-secrets-kv => /path/to/your/project/openbao-plugin-secrets-kv
 ```
 
 Alternatively, you could go through the plugin process. To do this,
 put the plugin binary into a location of your choice. This directory
-will be specified as the [`plugin_directory`](https://www.vaultproject.io/docs/configuration/index.html#plugin_directory)
-in the Vault config used to start the server.
+will be specified as the `plugin_directory` in the OpenBao config used to start the server.
 
 ```json
 ...
@@ -81,18 +75,18 @@ plugin_directory = "path/to/plugin/directory"
 ...
 ```
 
-Start a Vault server with this config file:
+Start a OpenBao server with this config file:
 ```sh
-$ vault server -config=path/to/config.json ...
+$ bao server -config=path/to/config.json ...
 ...
 ```
 
-Once the server is started, register the plugin in the Vault server's [plugin catalog](https://developer.hashicorp.com/vault/docs/plugins/plugin-architecture#plugin-catalog):
+Once the server is started, register the plugin in the OpenBao server's plugin catalog:
 
 ```sh
-$ vault plugin register \
+$ bao plugin register \
         -sha256=<expected SHA256 Hex value of the plugin binary> \
-        -command="vault-plugin-secrets-kv" \
+        -command="openbao-plugin-secrets-kv" \
         secret \
         kv
 ```
@@ -101,15 +95,15 @@ Note you should generate a new sha256 checksum if you have made changes
 to the plugin. Example using openssl:
 
 ```sh
-openssl dgst -sha256 $GOPATH/vault-plugin-secrets-kv
+openssl dgst -sha256 $GOPATH/openbao-plugin-secrets-kv
 ...
-SHA256(.../go/bin/vault-plugin-secrets-kv)= 896c13c0f5305daed381952a128322e02bc28a57d0c862a78cbc2ea66e8c6fa1
+SHA256(.../go/bin/openbao-plugin-secrets-kv)= 896c13c0f5305daed381952a128322e02bc28a57d0c862a78cbc2ea66e8c6fa1
 ```
 
 Enable the auth plugin backend using the secrets enable plugin command:
 
 ```sh
-$ vault secrets enable -plugin-name='kv' plugin
+$ bao secrets enable -plugin-name='kv' plugin
 ...
 
 Successfully enabled 'plugin' at 'kv'!
