@@ -10,8 +10,8 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"github.com/hashicorp/vault/sdk/helper/testhelpers/schema"
-	"github.com/hashicorp/vault/sdk/logical"
+	"github.com/openbao/openbao/sdk/helper/testhelpers/schema"
+	"github.com/openbao/openbao/sdk/logical"
 )
 
 // TestVersionedKV_Subkeys_NotFound verifies that a nil logical.Response is
