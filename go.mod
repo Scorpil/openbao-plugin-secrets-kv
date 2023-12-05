@@ -2,10 +2,6 @@ module github.com/openbao/openbao-plugin-secrets-kv
 
 go 1.20
 
-replace github.com/openbao/openbao/sdk => ../openbao/sdk
-
-replace github.com/openbao/openbao/api => ../openbao/api
-
 require (
 	github.com/go-test/deep v1.1.0
 	github.com/golang/protobuf v1.5.3
